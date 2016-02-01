@@ -124,10 +124,18 @@ var calders_forms_check_conditions, calders_forms_init_conditions;
 					}
 				}				
 				// add result in
-				istrue = true;
+				//PBPB : Change AND / OR
+				//istrue = true;
+				//for( var prop in truelines ){
+				//	if(truelines[prop] === false){
+				//		istrue = false;
+				//		break;
+				//	}
+				//}
+				istrue = false;
 				for( var prop in truelines ){
-					if(truelines[prop] === false){
-						istrue = false;
+					if(truelines[prop] === true){
+						istrue = true;
 						break;
 					}
 				}

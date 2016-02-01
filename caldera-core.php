@@ -1,10 +1,10 @@
 <?php
 /*
-  Plugin Name: Caldera Forms
+  Plugin Name: Caldera Forms - UdeS - FLSH
   Plugin URI: https://calderawp.com/caldera-forms/
-  Description: Easy to use, grid based responsive form builder for creating simple to complex forms.
-  Author: David Cramer
-  Version: 1.3.2.1
+  Description: Easy to use, grid based responsive form builder for creating simple to complex forms. Modified for UdeS - FLSH
+  Author: David Cramer, Philippe Boissonneault
+  Version: 99.1.3.2.1
   Author URI: https://calderawp.com
   Text Domain: caldera-forms
   GitHub Plugin URI: https://github.com/Desertsnowman/Caldera-Forms/
@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 define('CFCORE_PATH', plugin_dir_path(__FILE__));
 define('CFCORE_URL', plugin_dir_url(__FILE__));
-define('CFCORE_VER', '1.3.2.1');
+define('CFCORE_VER', '99.1.3.2.1');
 define('CFCORE_EXTEND_URL', 'https://api.calderaforms.com/1.0/');
 
 include_once CFCORE_PATH . 'classes/core.php';

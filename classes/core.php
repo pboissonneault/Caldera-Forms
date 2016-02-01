@@ -1652,10 +1652,17 @@ class Caldera_Forms {
 					 */
 					$field_for_label = apply_filters( 'caldera_forms_autopopulate_options_post_label_field', 'post_title', $field, $form, $posts  );
 					foreach($posts as $post_item){
-						$field['config']['option'][$post_item->ID] = array(
-							'value'	=>	$post_item->{$field_for_value},
-							'label' =>	$post_item->{$field_for_label}
+						$option = array(
+								'value'	=>	$post_item->{$field_for_value},
+								'label' =>	$post_item->{$field_for_label}
 						);
+						if(!empty($field[ 'config' ]['meta_value_field'])) {
+							$val = get_post_meta($post_item->ID, $field[ 'config' ]['meta_value_field'], true);
+							if(!empty($val)) {
+								$option['value'] = $val;
+							}
+						}
+						$field['config']['option'][$post_item->ID] = $option;
 					}
 
 				break;
@@ -1887,7 +1894,9 @@ class Caldera_Forms {
 				
 			}
 
-			$trues[$groupid] = in_array(false, $truelines) ? false : true;
+			//$trues[$groupid] = in_array(false, $truelines) ? false : true;
+			//PBPB : Change AND / OR
+			$trues[$groupid] = in_array(true, $truelines) ? true : false;
 		}
 
 		if($conditions['type'] == 'use' || $conditions['type'] == 'show'){
