@@ -3,12 +3,13 @@
   Plugin Name: Caldera Forms - UdeS - FLSH
   Plugin URI: https://calderawp.com/caldera-forms/
   Description: Easy to use, grid based responsive form builder for creating simple to complex forms. Modified for UdeS - FLSH
-  Author: David Cramer, Philippe Boissonneault
+  Author: David Cramer
+  Modified by : Philippe Boissonneault
   Version: 99.1.3.2.1
   Author URI: https://calderawp.com
   Text Domain: caldera-forms
-  GitHub Plugin URI: https://github.com/Desertsnowman/Caldera-Forms/
-  GitHub Branch:     current-stable
+  GitHub Plugin URI: https://github.com/pboissonneault/Caldera-Forms/
+  GitHub Branch:     udes-master
  */
 
 //initilize plugin
