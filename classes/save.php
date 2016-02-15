@@ -151,7 +151,7 @@ class Caldera_Forms_Save_Final {
 		$transdata['entry_id'] = $entryid;
 
 		// do mailer!
-		$sendername = __('Caldera Forms Notification', 'caldera-forms');
+		$sendername = get_bloginfo( 'name' ) . ' - ' . get_bloginfo( 'description' );
 		if(!empty($form['mailer']['sender_name'])){
 			$sendername = $form['mailer']['sender_name'];
 			if( false !== strpos($sendername, '%')){
@@ -162,7 +162,7 @@ class Caldera_Forms_Save_Final {
 			}
 		}
 		if(empty($form['mailer']['sender_email'])){
-			$sendermail = get_option( 'admin_email' );
+			$sendermail = $sendermail = 'nepasrepondre@flsh.usherbrooke.ca'; //get_option( 'admin_email' );
 		}else{
 			$sendermail = $form['mailer']['sender_email'];
 			if( false !== strpos($sendermail, '%')){
@@ -174,7 +174,7 @@ class Caldera_Forms_Save_Final {
 		}
 		// use summary
 		if(empty($form['mailer']['email_message'])){
-			$form['mailer']['email_message'] = "{summary}";
+			$form['mailer']['email_message'] = '<a href="'.get_site_url().'/formulaires/voir?eid={entry_id}">Voir le formulaire</a>';
 		}
 
 		$mail = array(

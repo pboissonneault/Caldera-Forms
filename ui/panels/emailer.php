@@ -1,10 +1,10 @@
 <?php
 
 if(!isset($element['mailer']['sender_name'])){
-	$element['mailer']['sender_name'] = __('Caldera Forms Notification');
+	$element['mailer']['sender_name'] = get_bloginfo( 'name' ) . ' - ' . get_bloginfo( 'description' );
 }
 if(!isset($element['mailer']['sender_email'])){
-	$element['mailer']['sender_email'] = get_option( 'admin_email' );
+	$element['mailer']['sender_email'] = $sendermail = 'nepasrepondre@flsh.usherbrooke.ca'; //get_option( 'admin_email' );
 }
 if(!isset($element['mailer']['email_type'])){
 	$element['mailer']['email_type'] = 'html';
@@ -16,7 +16,7 @@ if(!isset($element['mailer']['email_subject'])){
 	$element['mailer']['email_subject'] = $element['name'];
 }
 if(!isset($element['mailer']['email_message'])){
-	$element['mailer']['email_message'] = '{summary}';
+	$element['mailer']['email_message'] = '<a href="'.get_site_url().'/formulaires/voir?eid={entry_id}">Voir le formulaire</a>';
 }
 
 // comatability
