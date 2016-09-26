@@ -723,7 +723,7 @@ function field_line_template($id = '{{id}}', $label = '{{label}}', $group = '{{g
 
 							$active = null;
 							if(!empty($tab_setup['active'])){
-								$active = " class=\"active\"";
+								$active = " class=\"active asdf\"";
 							}
 							echo "<li".$active." id=\"tab_".$group_slug."\"><a href=\"#" . $group_slug . "-config-panel\">" . $tab_setup['name'] . "</a></li>\r\n";
 						}

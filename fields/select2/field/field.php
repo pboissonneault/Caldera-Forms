@@ -36,6 +36,7 @@ if( !empty( $field['config']['advanced_populate']['filter'] ) ){
 ?>
 	<?php echo $field_label; ?>
 	<?php echo $field_before; ?>
+		<?php if($form['editable']): ?>
 		<?php if( empty( $bound ) ){ ?>
 		<select <?php echo $field_placeholder; ?> id="<?php echo $field_id; ?>" <?php echo $multi; ?> data-select-two="true" data-field="<?php echo $field_base_id; ?>" class="<?php echo $field_class; ?>" name="<?php echo $field_name; ?>" <?php echo $field_required; ?> <?php echo $placeholder; ?>>
 		<?php
@@ -73,58 +74,62 @@ if( !empty( $field['config']['advanced_populate']['filter'] ) ){
 		<input type="text" data-select-two="true" id="<?php echo $field_id; ?>" data-field="<?php echo $field_base_id; ?>" name="<?php echo $field_name; ?>[]" multiple="multiple" value="<?php echo htmlentities( $field_value ); ?>">
 		<?php } ?>
 		<?php echo $field_caption; ?>
+		<?php else: ?>
+			<input type="hidden" id="<?php echo $field_id; ?>" data-field="<?php echo $field_base_id; ?>" name="<?php echo $field_name; ?>" value="<?php echo htmlentities( $field_value ); ?>">
+			<div class="printHelper"><?php echo $field_value; ?></div>
+		<?php endif; ?>
 	<?php echo $field_after; ?>
 <?php echo $wrapper_after; ?>
 
-<?php
-ob_start();
-?>
-<style>
-.ccselect2-drop-active,.ccselect2-drop.ccselect2-drop-above.ccselect2-drop-active,.ccselect2-container-active .ccselect2-choice,.ccselect2-container-active .ccselect2-choices,.ccselect2-dropdown-open.ccselect2-drop-above .ccselect2-choice,.ccselect2-dropdown-open.ccselect2-drop-above .ccselect2-choices,.ccselect2-container-multi.ccselect2-container-active .ccselect2-choices,.ccselect2-container-multi .ccselect2-choices .ccselect2-search-choice-focus{
-    border-color: <?php echo $field['config']['border']; ?>;
-}.ccselect2-results .ccselect2-highlighted,.ccselect2-container-multi .ccselect2-choices .ccselect2-search-choice-focus{
-	background: <?php echo $field['config']['color']; ?>;
-}
-</style>
-<script>
-jQuery( function($){
-	<?php if( !empty( $bound ) ){ ?>
-	var opts = {
-		ajax: {
-			url: ajaxurl,
-			dataType: 'json',
-			quietMillis: 250,
-			data: function (term, page) {
-				return {
-					action : 'cf_filter_populate',
-					q: $('<?php echo $bound; ?>').val(), // search term
-					<?php if( !empty( $field['config']['easy_pod'] ) ){?>easy_pod : '<?php echo $field['config']['easy_pod']; ?>'<?php } ?>
-				};
-			},
-			results: function (data, page) {
-				console.log( data );
-				return { results: data };
-			},
-			cache: true
-		}
-	};
-	<?php }else{ ?>	
-	var opts = {};
-	<?php } ?>
-
-	$(document).on('cf.add', function(){
-		$('#<?php echo $field_id; ?>').select2( opts );
-	}).trigger('cf.add');
-});
-</script>
-<?php
-	$script_template = ob_get_clean();
-	if( ! empty( $form[ 'grid_object' ] ) && is_object( $form[ 'grid_object' ] ) ){
-		$form[ 'grid_object' ]->append( $script_template, $field[ 'grid_location' ] );
-	}else{
-		echo $script_template;
+<?php if($form['editable']):
+	ob_start();
+	?>
+	<style>
+	.ccselect2-drop-active,.ccselect2-drop.ccselect2-drop-above.ccselect2-drop-active,.ccselect2-container-active .ccselect2-choice,.ccselect2-container-active .ccselect2-choices,.ccselect2-dropdown-open.ccselect2-drop-above .ccselect2-choice,.ccselect2-dropdown-open.ccselect2-drop-above .ccselect2-choices,.ccselect2-container-multi.ccselect2-container-active .ccselect2-choices,.ccselect2-container-multi .ccselect2-choices .ccselect2-search-choice-focus{
+		border-color: <?php echo $field['config']['border']; ?>;
+	}.ccselect2-results .ccselect2-highlighted,.ccselect2-container-multi .ccselect2-choices .ccselect2-search-choice-focus{
+		background: <?php echo $field['config']['color']; ?>;
 	}
+	</style>
+	<script>
+	jQuery( function($){
+		<?php if( !empty( $bound ) ){ ?>
+		var opts = {
+			ajax: {
+				url: ajaxurl,
+				dataType: 'json',
+				quietMillis: 250,
+				data: function (term, page) {
+					return {
+						action : 'cf_filter_populate',
+						q: $('<?php echo $bound; ?>').val(), // search term
+						<?php if( !empty( $field['config']['easy_pod'] ) ){?>easy_pod : '<?php echo $field['config']['easy_pod']; ?>'<?php } ?>
+					};
+				},
+				results: function (data, page) {
+					console.log( data );
+					return { results: data };
+				},
+				cache: true
+			}
+		};
+		<?php }else{ ?>
+		var opts = {};
+		<?php } ?>
 
+		$(document).on('cf.add', function(){
+			$('#<?php echo $field_id; ?>').select2( opts );
+		}).trigger('cf.add');
+	});
+	</script>
+	<?php
+		$script_template = ob_get_clean();
+		if( ! empty( $form[ 'grid_object' ] ) && is_object( $form[ 'grid_object' ] ) ){
+			$form[ 'grid_object' ]->append( $script_template, $field[ 'grid_location' ] );
+		}else{
+			echo $script_template;
+		}
+endif; ?>
 
 
 

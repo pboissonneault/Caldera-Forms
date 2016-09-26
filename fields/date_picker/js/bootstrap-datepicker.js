@@ -1425,6 +1425,15 @@
 			monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
 			today: "Today",
 			clear: "Clear"
+		},
+		fr: {
+			days: ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"],
+			daysShort: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"],
+			daysMin: ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di"],
+			months: ["Janvier", "Férvier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+			monthsShort: ["Jan", "Fév", "Mar", "Avr", "Mai", "Jui", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"],
+			today: "Aujourd'hui",
+			clear: "Effacer"
 		}
 	};
 

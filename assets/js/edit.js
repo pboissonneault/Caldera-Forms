@@ -108,7 +108,7 @@ jQuery(document).ready(function($){
 			template 		= ( compiled_templates[select.val() + '_tmpl'] ? compiled_templates[select.val() + '_tmpl'] : compiled_templates.noconfig_field_templ ),//Handlebars.compile(templ),
 			config			= parent.find('.field_config_string').val(),
 			current_type	= select.data('type');
-
+			fn				= window[select.val()+'_caldera_setup'];
 
 			parent.find('.caldera-config-group').show();
 
@@ -180,6 +180,11 @@ jQuery(document).ready(function($){
 				$('.caldera-header-save-button').prop('disabled', false);
 				rebuild_field_binding();
 				baldrickTriggers();
+			}
+
+			//After setup javascript from setup.js
+			if(typeof fn === 'function') {
+				fn(parent.attr('id'));
 			}
 	}
 
@@ -2144,7 +2149,7 @@ jQuery(document).ready(function($) {
 				config.option["opt" + parseInt( ( Math.random() + i ) * 0x100000 )] = {
 					value	:	batch[i],
 					label	:	batch[i],
-					default	:	false
+					'default'	:	false
 				}
 			}
 			$(clicked.data('options')).parent().hide();
@@ -2155,7 +2160,7 @@ jQuery(document).ready(function($) {
 			config.option[key]	=	{
 				value	:	'',
 				label	:	'',
-				default :	false				
+				'default' :	false
 			};
 		}
 
@@ -2485,7 +2490,3 @@ Handlebars.registerHelper('_field', function(args) {
 Handlebars.registerHelper('console', function(context, options) {
 	console.log(this);
 });
-
-
-
-

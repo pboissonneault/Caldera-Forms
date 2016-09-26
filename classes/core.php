@@ -66,6 +66,7 @@ class Caldera_Forms {
 
 		// action
 		add_action('caldera_forms_submit_complete', array( $this, 'save_final_form'),50);
+		add_action( 'init', array( $this, 'load_field_functions' ) );
 
 		add_action("wp_ajax_get_entry", array( $this, 'get_entry') );
 		// find if profile is loaded
@@ -206,6 +207,19 @@ class Caldera_Forms {
 			exit;
 		}*/
 	}
+
+	public static function load_field_functions() {
+		$field_types = self::get_field_types();
+
+		foreach($field_types as $fieldType=>$fieldConfig){
+			if(isset($fieldConfig['functions'])) {
+				if(file_exists($fieldConfig['functions'])) {
+					include $fieldConfig['functions'];
+				}
+			}
+		}
+	}
+
 	/**
 	 * Activate and setip plugin
 	 */
@@ -1274,7 +1288,15 @@ class Caldera_Forms {
 						'caption',
 						'required',
 						'entry_list'
-					)
+					),
+					"scripts"	=>	array(
+//						CFCORE_URL . "fields/html/tinymce/tinymce.min.js",
+//						CFCORE_URL . "fields/html/tinymce/jquery.tinymce.min.js",
+						CFCORE_URL . "fields/html/setup.js"
+					),
+//					"styles"	=> array(
+//						includes_url('css/') . 'editor.css'
+//					)
 				)
 			),
 			'hidden' => array(
@@ -1291,6 +1313,28 @@ class Caldera_Forms {
 						'caption',
 						'required',
 					)
+				)
+			),
+			'search-ad' => array(
+				"field"		=>	__("Search Active Directory"),
+				"description" => __('Helper to fill fields with data from AD'),
+				"file"		=>	CFCORE_PATH . "fields/search-active-directory/field.php",
+				"functions" => 	CFCORE_PATH . "fields/search-active-directory/functions.php",
+				"category"	=>	__("Special", "caldera-forms"),
+				"icon"		=>	CFCORE_URL . "fields/search-active-directory/icon.png",
+				"capture"	=>	false,
+				"options"	=>	"single",
+				"setup"		=>	array(
+					"preview"	=>	CFCORE_PATH . "fields/search-active-directory/preview.php",
+					"template"	=>	CFCORE_PATH . "fields/search-active-directory/config_template.php",
+				),
+				"scripts"	=>	array(
+					'jquery',
+					CFCORE_URL . "fields/search-active-directory/assets/js/search-ad.js"
+				),
+				"styles"	=> array(
+					CFCORE_URL . "fields/search-active-directory/assets/css/search-ad.css",
+					CFCORE_URL . "fields/search-active-directory/assets/font-awesome/css/font-awesome.min.css"
 				)
 			),
 			'button' => array(
@@ -1510,9 +1554,9 @@ class Caldera_Forms {
 				)
 			)
 		);
-		
+
 		return array_merge( $fields, $internal_fields );
-		
+
 	}
 
 	/**
@@ -1658,8 +1702,25 @@ class Caldera_Forms {
 						);
 						if(!empty($field[ 'config' ]['meta_value_field'])) {
 							$val = get_post_meta($post_item->ID, $field[ 'config' ]['meta_value_field'], true);
+							/**
+							 * PBPB : patch pour aller cherche le courriel dans personnel
+							 * Il faut que ce soit sous le format suivant : champcpt1_champcpt2
+							 * où champcpt1 est pour un champ de tyle relation et champcpt2 est le champ dans la relation
+							 */
+							if(empty($val)) {
+								$pos = strrpos($field[ 'config' ]['meta_value_field'], '_');
+								$fld = substr($field[ 'config' ]['meta_value_field'], 0, $pos);
+								$fld2 = substr($field[ 'config' ]['meta_value_field'], $pos+1);
+								$val = get_post_meta($post_item->ID, $fld, true);
+								if(!empty($val)) {
+									$val = array_pop($val);
+									$val = udesFormulaires::getPersonnelInfo($val);
+									$val = $val[$fld2];
+								}
+							}
 							if(!empty($val)) {
-								$option['value'] = $val;
+								//PBPB : Patch to reselect from cb
+								$option['value'] = $val.','.base64_encode($post_item->ID);
 							}
 						}
 						$field['config']['option'][$post_item->ID] = $option;
@@ -1894,9 +1955,7 @@ class Caldera_Forms {
 				
 			}
 
-			//$trues[$groupid] = in_array(false, $truelines) ? false : true;
-			//PBPB : Change AND / OR
-			$trues[$groupid] = in_array(true, $truelines) ? true : false;
+			$trues[$groupid] = in_array(false, $truelines) ? false : true;
 		}
 
 		if($conditions['type'] == 'use' || $conditions['type'] == 'show'){
@@ -4334,6 +4393,8 @@ class Caldera_Forms {
 			}elseif( !empty( $atts['id'] ) ){
 				$form = self::get_form( $atts['id'] );
 			}
+
+			$form['editable'] = !(isset($atts['editable']) && (($atts['editable'] === 0) || ($atts['editable'] === '0') || ($atts['editable'] === false) || ($atts['editable'] === 'false')));
 		}
 
 		if( empty( $form ) ){

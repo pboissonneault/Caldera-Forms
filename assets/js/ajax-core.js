@@ -40,13 +40,13 @@ jQuery(function($){
 				
 				obj.params.trigger.find(':submit').prop('disabled',false);
 				
-				var instance = obj.params.trigger.data('instance');
+				var instance = obj.params.trigger.data('instance'),
+					hasCallback = false;
 
 				// run callback if set.
 				if( obj.params.trigger.data('customCallback') && typeof window[obj.params.trigger.data('customCallback')] === 'function' ){
-					
+					hasCallback = true;
 					window[obj.params.trigger.data('customCallback')](obj.data);
-				
 				}
 
 				if( !obj.params.trigger.data('inhibitnotice') ){
@@ -68,8 +68,8 @@ jQuery(function($){
 					}
 
 				}
-				// hit reset
-				if( ( obj.data.status === 'complete' || obj.data.type === 'success' ) && !obj.data.entry ){
+				// hit reset whan no callback is defined
+				if( !hasCallback && ( obj.data.status === 'complete' || obj.data.type === 'success' ) && !obj.data.entry ){
 					obj.params.trigger[0].reset();
 				}
 

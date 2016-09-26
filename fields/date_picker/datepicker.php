@@ -43,7 +43,16 @@ if( !empty( $field['config']['autoclose'] ) ){
 <?php echo $wrapper_before; ?>
 	<?php echo $field_label; ?>
 	<?php echo $field_before; ?>
-		<input <?php echo $field_placeholder; ?> type="text" data-provide="cfdatepicker" data-field="<?php echo $field_base_id; ?>" class="<?php echo $field_class; ?>  is-cfdatepicker" id="<?php echo $field_id; ?>" <?php echo $has_lang; ?> data-date-format="<?php echo $field['config']['format']; ?>" <?php echo $start_end_atts; ?> <?php echo $is_autoclose; ?> <?php echo $daysOfWeekDisabled; ?> name="<?php echo $field_name; ?>" value="<?php echo $field_value; ?>" <?php echo $field_required; ?>>
+		<?php if($form['editable']): ?>
+			<input <?php echo $field_placeholder; ?> type="text" data-provide="cfdatepicker" data-field="<?php echo $field_base_id; ?>" class="<?php echo $field_class; ?>  is-cfdatepicker" id="<?php echo $field_id; ?>" <?php echo $has_lang; ?> data-date-format="<?php echo $field['config']['format']; ?>" <?php echo $start_end_atts; ?> <?php echo $is_autoclose; ?> <?php echo $daysOfWeekDisabled; ?> name="<?php echo $field_name; ?>" value="<?php echo $field_value; ?>" <?php echo $field_required; ?>>
+		<?php else:
+			if(empty($field_value)) {
+				$field_value = ' ';
+			}
+			?>
+			<input type="hidden" id="<?php echo $field_id; ?>" data-field="<?php echo $field_base_id; ?>" name="<?php echo $field_name; ?>" value="<?php echo htmlentities( $field_value ); ?>">
+			<div class="printHelper"><?php echo $field_value; ?></div>
+		<?php endif; ?>
 		<?php echo $field_caption; ?>
 	<?php echo $field_after; ?>
 <?php echo $wrapper_after; ?>
