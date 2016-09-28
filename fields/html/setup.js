@@ -1,10 +1,10 @@
 var mceInit = function(id) {
     this.params = {
-        plugins: ["table paste"],
+        plugins:            ["table paste"],
         relative_urls:      false,
         toolbar_items_size: 'small',
         entity_encoding:    'raw',
-        selector: '#' + id + 'editor',
+        selector:           '#' + id + 'editor',
         toolbar:            "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image pasteword",
         paste_auto_cleanup_on_paste : true,
         setup:function(ed) {
