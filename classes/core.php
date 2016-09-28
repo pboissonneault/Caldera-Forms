@@ -1290,13 +1290,12 @@ class Caldera_Forms {
 						'entry_list'
 					),
 					"scripts"	=>	array(
-//						CFCORE_URL . "fields/html/tinymce/tinymce.min.js",
-//						CFCORE_URL . "fields/html/tinymce/jquery.tinymce.min.js",
+						includes_url('js/tinymce/').'tinymce.min.js',
 						CFCORE_URL . "fields/html/setup.js"
 					),
-//					"styles"	=> array(
-//						includes_url('css/') . 'editor.css'
-//					)
+					"styles"	=> array(
+						CFCORE_URL . "fields/html/setup.css"
+					)
 				)
 			),
 			'hidden' => array(
