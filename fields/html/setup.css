@@ -1,0 +1,4 @@
+/* Warning: This is a patch to get icons right.. */
+i.mce-ico {
+    font: 400 20px/1 dashicons !important;
+}
